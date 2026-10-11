@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "mimosa-finding-history/v1",
+  "runId": "20261007T061915346Z-60646-05e7aaa98352",
+  "runStatus": "inconclusive",
+  "errors": [
+    "baseline-read:package-lock.json: baseline_snapshot_unreadable: file is missing from task baseline",
+    "supply-chain-check:.: spawnSync /usr/local/bin/node ETIMEDOUT"
+  ],
+  "target": ".",
+  "revision": null,
+  "diffHash": "017ec39f7a1e89bdbfc0aa6ec1cbf08651628db0d0c1b5e73c68e3c0c03eeb24",
+  "rulesVersion": "unavailable",
+  "recordedAt": "2026-10-07T06:19:15.346Z",
+  "timing": {
+    "startedAt": "2026-10-07T06:19:12.175Z",
+    "completedAt": "2026-10-07T06:19:15.346Z",
+    "durationMs": 3171
+  },
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "total": 0,
+    "modelCalls": 0,
+    "measurement": "known-zero"
+  },
+  "findings": {
+    "total": 0,
+    "bySeverity": {},
+    "byStatus": {}
+  },
+  "coverage": {
+    "status": "partial",
+    "reasonCounts": {
+      "baseline_snapshot_unreadable": 1,
+      "project_check_failed": 2
+    }
+  },
+  "evidenceBoundary": "static_only",
+  "immutableReport": ".mimosa/reports/task-review-sess_8374a3d1-c465-4e73-a74c-29f33a8bcc33-20261007T061915346Z-60646-05e7aaa98352.json"
+}

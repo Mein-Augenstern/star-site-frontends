@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "mimosa-finding-ledger-batch/v1",
+  "batchId": "stop-20261011T001105647Z-4607-fc90b3048835",
+  "runId": "20261011T001105647Z-4607-fc90b3048835",
+  "runStatus": "completed",
+  "coverage": {
+    "status": "complete",
+    "reasons": []
+  },
+  "source": {
+    "component": "zcode-hook",
+    "operationId": "Stop"
+  },
+  "revision": null,
+  "diffHash": "d5180a25ef5c876d6e896369ec1a805d1bd25dd4c171df06e3cb350ed89c624e",
+  "rulesVersion": "unavailable",
+  "sessionHash": "068f1a1b9fb5d57445e441fa4c6a2167ba631d59d4ef7d2ed94d33ca340ddb0c",
+  "reportRef": ".mimosa/reports/task-review-sess_2ec92d5f-8c25-4b86-8c95-36806a6d7d75-20261011T001105647Z-4607-fc90b3048835.json",
+  "events": [],
+  "observedFindingIds": [],
+  "verifiedFiles": [
+    {
+      "file": "src/api/index.ts",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "src/api/health.ts",
+      "direct": "complete",
+      "projectContext": "partial"
+    }
+  ],
+  "recordedAt": "2026-10-11T00:11:06.788Z"
+}
