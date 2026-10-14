@@ -2,6 +2,7 @@
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { getReport, interpretReport, deleteReport } from '@/api/health'
+import { ABNORMAL_FLAG } from '@/api/health'
 import type { HealthIndicator } from '@/api/health'
 import { createRecheckPlan } from '@/api/recheck'
 import { listFamilyMembers } from '@/api'
@@ -85,8 +86,8 @@ function openTrend(itemName: string) {
 }
 
 function abnormalText(flag: number) {
-  if (flag === 1) return '↑ 偏高'
-  if (flag === 2) return '↓ 偏低'
+  if (flag === ABNORMAL_FLAG.HIGH) return '↑ 偏高'
+  if (flag === ABNORMAL_FLAG.LOW) return '↓ 偏低'
   return ''
 }
 

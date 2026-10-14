@@ -34,7 +34,17 @@ export function createRecheckPlan(data: {
   return request({ url: '/recheck/plans', method: 'POST', data })
 }
 
-/** 计划列表（全家范围或指定成员；status 1进行中 2已闭环 3已取消） */
+/** 复查计划状态（与后端 RecheckPlan.STATUS_* 对齐） */
+export const PLAN_STATUS = {
+  /** 进行中 */
+  ACTIVE: 1,
+  /** 已闭环 */
+  CLOSED: 2,
+  /** 已取消 */
+  CANCELLED: 3,
+} as const
+
+/** 计划列表（全家范围或指定成员；status 见 PLAN_STATUS） */
 export function listRecheckPlans(params: {
   familyMemberId?: number
   status?: number

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onPullDownRefresh, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { listRecheckPlans, closeRecheckPlan, cancelRecheckPlan } from '@/api/recheck'
+import { listRecheckPlans, closeRecheckPlan, cancelRecheckPlan, PLAN_STATUS } from '@/api/recheck'
 import { listFamilyMembers } from '@/api'
 import { listReports } from '@/api/health'
 import type { RecheckPlan } from '@/api/recheck'
@@ -9,9 +9,9 @@ import type { FamilyMemberVO } from '@/types/api'
 import { getToken } from '@/utils/request'
 
 const TABS = [
-  { status: 1, label: '进行中' },
-  { status: 2, label: '已闭环' },
-  { status: 3, label: '已取消' },
+  { status: PLAN_STATUS.ACTIVE, label: '进行中' },
+  { status: PLAN_STATUS.CLOSED, label: '已闭环' },
+  { status: PLAN_STATUS.CANCELLED, label: '已取消' },
 ]
 const status = ref(1)
 const plans = ref<RecheckPlan[]>([])

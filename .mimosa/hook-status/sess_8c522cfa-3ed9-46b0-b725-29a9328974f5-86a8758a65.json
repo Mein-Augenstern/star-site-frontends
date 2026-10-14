@@ -1,14 +1,14 @@
 {
   "schemaVersion": "mimosa-hook-status/v1",
-  "recordedAt": "2026-10-14T13:16:31.002Z",
+  "recordedAt": "2026-10-14T13:17:26.756Z",
   "sessionId": "sess_8c522cfa-3ed9-46b0-b725-29a9328974f5",
   "event": "PostToolUse",
   "toolName": "Edit",
-  "file": "/Users/xiaopu/.zcode/cli/memories/projects/develop-258aa2219d0c5704/memory/star-site-project.md",
+  "file": "/Users/xiaopu/.zcode/cli/memories/projects/develop-258aa2219d0c5704/memory/MEMORY.md",
   "outcome": "clear",
   "coverage": "complete",
   "findingCount": 0,
-  "durationMs": 5,
+  "durationMs": 50,
   "hostState": "hook_complete",
   "reportHint": ".mimosa/reports/"
 }

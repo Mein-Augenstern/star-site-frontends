@@ -17,6 +17,15 @@ export interface HealthReport {
   indicators?: HealthIndicator[]
 }
 
+/** 指标异常标志（与后端 health_indicator.abnormal_flag 对齐） */
+export const ABNORMAL_FLAG = {
+  NORMAL: 0,
+  /** 偏高 */
+  HIGH: 1,
+  /** 偏低 */
+  LOW: 2,
+} as const
+
 export interface HealthIndicator {
   id: number
   itemName: string

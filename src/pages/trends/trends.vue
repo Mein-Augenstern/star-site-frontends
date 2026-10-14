@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, getCurrentInstance } from 'vue'
-import { getTrends } from '@/api/health'
+import { getTrends, ABNORMAL_FLAG } from '@/api/health'
 import type { TrendPoint } from '@/api/health'
 import { getToken } from '@/utils/request'
 
@@ -130,7 +130,7 @@ function draw() {
       const y = yAt(p.valueNum as number)
       ctx.beginPath()
       ctx.arc(x, y, 4, 0, Math.PI * 2)
-      ctx.fillStyle = p.abnormalFlag > 0 ? '#fa5151' : '#07c160'
+      ctx.fillStyle = p.abnormalFlag > ABNORMAL_FLAG.NORMAL ? '#fa5151' : '#07c160'
       ctx.fill()
       ctx.strokeStyle = '#fff'
       ctx.lineWidth = 1.5
@@ -172,8 +172,8 @@ function openReport(p: TrendPoint) {
         <view class="year">{{ p.reportYear }}</view>
         <view class="value" :class="{ abnormal: p.abnormalFlag > 0 }">
           {{ p.valueNum }}{{ p.unit }}
-          <text v-if="p.abnormalFlag === 1" class="tag">偏高</text>
-          <text v-if="p.abnormalFlag === 2" class="tag">偏低</text>
+          <text v-if="p.abnormalFlag === ABNORMAL_FLAG.HIGH" class="tag">偏高</text>
+          <text v-if="p.abnormalFlag === ABNORMAL_FLAG.LOW" class="tag">偏低</text>
         </view>
         <view class="arrow">›</view>
       </view>

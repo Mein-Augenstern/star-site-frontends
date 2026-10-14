@@ -3,7 +3,7 @@ import { onPullDownRefresh, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { listUpcoming, listFamilyMembers, refreshMemberCache, cachedMember, doneOccurrence } from '@/api'
 import { listReports } from '@/api/health'
-import { listRecheckPlans } from '@/api/recheck'
+import { listRecheckPlans, PLAN_STATUS } from '@/api/recheck'
 import type { RecheckPlan } from '@/api/recheck'
 import type { OccurrenceVO, FamilyMemberVO, MemberVO } from '@/types/api'
 import { getToken } from '@/utils/request'
@@ -37,7 +37,7 @@ async function refresh() {
     listFamilyMembers().then((ms) => (members.value = ms)).catch(() => {})
     const [reports, plans, up] = await Promise.all([
       listReports({ page: 1, size: 3 }),
-      listRecheckPlans({ status: 1 }).catch(() => [] as RecheckPlan[]),
+      listRecheckPlans({ status: PLAN_STATUS.ACTIVE }).catch(() => [] as RecheckPlan[]),
       listUpcoming(30).catch(() => [] as OccurrenceVO[]),
     ])
     reportCount.value = reports.total
