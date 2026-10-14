@@ -1,0 +1,44 @@
+{
+    "name" : "StarSite 家庭报告",
+    "appid" : "",
+    "description" : "把全家的体检报告装进微信，看懂每个异常指标",
+    "versionName" : "0.1.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    "app-plus" : {
+        "usingComponents" : true,
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "modules" : {},
+        "distribute" : {
+            "android" : {
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera\"/>"
+                ]
+            },
+            "ios" : {},
+            "sdkConfigs" : {}
+        }
+    },
+    "quickapp" : {},
+    "mp-weixin" : {
+        "appid" : "wx8bb4b89c676c6df8",
+        "setting" : {
+            "urlCheck" : false
+        },
+        "usingComponents" : true,
+        "__usePrivacyCheck__" : true
+    },
+    "uniStatistics": {
+        "enable": false
+    },
+    "vueVersion" : "3"
+}
