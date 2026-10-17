@@ -3,8 +3,9 @@ import type { UploadRequestOptions } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import PageHeader from '@/components/PageHeader.vue'
 import { listMembers } from '@/api/family'
-import { upload } from '@/api/file'
+import { preview, upload } from '@/api/file'
 import { createReport, listReports, searchReports } from '@/api/health'
 import type { FamilyMember, HealthReport, PageVO } from '@/types/api'
 
@@ -51,6 +52,7 @@ async function fetchPage() {
 }
 
 async function handleSearch() {
+  query.page = 1
   if (!keyword.value.trim()) {
     await fetchPage()
     return
@@ -62,6 +64,14 @@ async function handleSearch() {
   } finally {
     searching.value = false
   }
+}
+
+async function resetFilters() {
+  query.familyMemberId = undefined
+  query.year = undefined
+  query.page = 1
+  keyword.value = ''
+  await fetchPage()
 }
 
 function openUpload() {
@@ -122,48 +132,55 @@ async function handlePageChange(p: number) {
 
 <template>
   <div v-loading="loading">
-    <div class="toolbar">
-      <el-select v-model="query.familyMemberId" placeholder="全部成员" clearable style="width: 140px" @change="fetchPage">
-        <el-option v-for="m in members" :key="m.id" :label="m.name" :value="m.id" />
-      </el-select>
-      <el-select v-model="query.year" placeholder="全部年份" clearable style="width: 120px" @change="fetchPage">
-        <el-option v-for="y in years" :key="y" :label="y + ' 年'" :value="y" />
-      </el-select>
-      <el-input
-        v-model="keyword" placeholder="搜索：指标 / 医院 / 标题" clearable style="width: 220px"
-        @keyup.enter="handleSearch" @clear="fetchPage"
+    <PageHeader title="体检报告" description="管理家庭成员的体检报告与健康指标">
+      <template #actions>
+        <el-button type="primary" @click="openUpload">上传体检报告</el-button>
+      </template>
+    </PageHeader>
+
+    <el-card shadow="never" class="panel">
+      <div class="filter-bar">
+        <el-select v-model="query.familyMemberId" placeholder="全部成员" clearable style="width: 140px" @change="fetchPage">
+          <el-option v-for="m in members" :key="m.id" :label="m.name" :value="m.id" />
+        </el-select>
+        <el-select v-model="query.year" placeholder="全部年份" clearable style="width: 120px" @change="fetchPage">
+          <el-option v-for="y in years" :key="y" :label="y + ' 年'" :value="y" />
+        </el-select>
+        <el-input
+          v-model="keyword" placeholder="指标 / 医院 / 标题" clearable style="width: 220px"
+          @keyup.enter="handleSearch" @clear="handleSearch"
+        />
+        <el-button :loading="searching" @click="handleSearch">搜索</el-button>
+        <el-button @click="resetFilters">重置</el-button>
+      </div>
+
+      <el-table :data="page?.records ?? []" @row-click="(row: HealthReport) => router.push(`/reports/${row.id}`)">
+        <el-table-column label="成员" width="100">
+          <template #default="{ row }">{{ memberName(row.familyMemberId) }}</template>
+        </el-table-column>
+        <el-table-column prop="reportYear" label="年份" width="80" />
+        <el-table-column prop="title" label="标题" min-width="180" show-overflow-tooltip />
+        <el-table-column prop="hospital" label="医院" min-width="140" show-overflow-tooltip />
+        <el-table-column prop="checkupDate" label="体检日期" width="110" />
+        <el-table-column label="报告文件" width="90">
+          <template #default="{ row }">
+            <el-button v-if="row.fileId" link type="primary" @click.stop="preview(row.fileId)">查看</el-button>
+            <span v-else class="cell-muted">—</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="90">
+          <template #default="{ row }">
+            <el-button link type="primary" @click.stop="router.push(`/reports/${row.id}`)">详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        v-if="page && page.total > page.size"
+        class="pager" layout="total, prev, pager, next" :total="page.total"
+        :page-size="page.size" :current-page="page.page" @current-change="handlePageChange"
       />
-      <el-button :loading="searching" @click="handleSearch">搜索</el-button>
-      <div style="flex: 1"></div>
-      <el-button type="primary" @click="openUpload">上传体检报告</el-button>
-    </div>
-
-    <el-table :data="page?.records ?? []" stripe @row-click="(row: HealthReport) => router.push(`/reports/${row.id}`)">
-      <el-table-column label="成员" width="100">
-        <template #default="{ row }">{{ memberName(row.familyMemberId) }}</template>
-      </el-table-column>
-      <el-table-column prop="reportYear" label="年份" width="80" />
-      <el-table-column prop="title" label="标题" min-width="180" show-overflow-tooltip />
-      <el-table-column prop="hospital" label="医院" min-width="140" show-overflow-tooltip />
-      <el-table-column prop="checkupDate" label="体检日期" width="110" />
-      <el-table-column label="报告文件" width="90">
-        <template #default="{ row }">
-          <el-tag v-if="row.fileId" size="small" type="success">有</el-tag>
-          <el-tag v-else size="small" type="info">无</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="90">
-        <template #default="{ row }">
-          <el-button link type="primary" @click.stop="router.push(`/reports/${row.id}`)">详情</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-pagination
-      v-if="page && page.total > page.size"
-      class="pager" layout="prev, pager, next, total" :total="page.total"
-      :page-size="page.size" :current-page="page.page" @current-change="handlePageChange"
-    />
+    </el-card>
 
     <!-- 上传报告 -->
     <el-dialog v-model="uploadDialog" title="上传体检报告" width="520px">
@@ -205,11 +222,17 @@ async function handlePageChange(p: number) {
 </template>
 
 <style scoped>
-.toolbar {
+.filter-bar {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 14px;
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.cell-muted {
+  color: #c0c4cc;
 }
 
 .pager {

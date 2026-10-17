@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { listMembers } from '@/api/family'
 import { preview } from '@/api/file'
-import { deleteReport, getReport, saveIndicators } from '@/api/health'
+import { deleteReport, getReport, interpretReport, saveIndicators } from '@/api/health'
 import type { FamilyMember, HealthReport, IndicatorDTO } from '@/types/api'
 
 const route = useRoute()
@@ -20,6 +20,27 @@ const saving = ref(false)
 const rows = ref<IndicatorDTO[]>([])
 
 onMounted(load)
+
+/* ===== AI 解读 ===== */
+const aiText = ref('')
+const aiTime = ref('')
+const aiLoading = ref(false)
+const aiError = ref('')
+
+async function runAi(force = false) {
+  if (!route.params.id) return
+  aiLoading.value = true
+  aiError.value = ''
+  try {
+    const r = await interpretReport(Number(route.params.id), force)
+    aiText.value = r.text
+    aiTime.value = r.interpretedAt ?? ''
+  } catch (e: any) {
+    aiError.value = e?.message ?? 'AI 解读失败'
+  } finally {
+    aiLoading.value = false
+  }
+}
 
 async function load() {
   loading.value = true
@@ -99,12 +120,16 @@ function rowClass({ row }: { row: { abnormalFlag: number } }) {
 <template>
   <div v-loading="loading">
     <template v-if="report">
+      <el-breadcrumb separator="/" class="breadcrumb">
+        <el-breadcrumb-item :to="{ path: '/reports' }">体检报告</el-breadcrumb-item>
+        <el-breadcrumb-item>报告详情</el-breadcrumb-item>
+      </el-breadcrumb>
+
       <div class="head-bar">
-        <el-button @click="router.back()">← 返回</el-button>
         <h2 class="title">{{ report.title }}</h2>
         <div style="flex: 1"></div>
         <el-button v-if="report.fileId" @click="preview(report.fileId)">查看报告文件</el-button>
-        <el-button type="primary" plain @click="openIndicators">
+        <el-button type="primary" @click="openIndicators">
           {{ report.indicators && report.indicators.length > 0 ? '重新录入指标' : '录入指标' }}
         </el-button>
         <el-button type="danger" plain @click="handleDelete">删除</el-button>
@@ -122,7 +147,7 @@ function rowClass({ row }: { row: { abnormalFlag: number } }) {
       <p v-if="report.summary" class="summary">{{ report.summary }}</p>
 
       <el-card shadow="never">
-        <template #header>体检指标</template>
+        <template #header>体检指标（{{ report.indicators?.length ?? 0 }}）</template>
         <el-empty v-if="!report.indicators || report.indicators.length === 0" description="还没有录入指标" />
         <el-table v-else :data="report.indicators" :row-class-name="rowClass" stripe>
           <el-table-column prop="itemGroup" label="分组" width="110" />
@@ -185,10 +210,32 @@ function rowClass({ row }: { row: { abnormalFlag: number } }) {
         <el-button type="primary" :loading="saving" @click="handleSaveIndicators">保存指标</el-button>
       </template>
     </el-dialog>
+  <!-- AI 解读 -->
+  <el-card shadow="never" class="ai-card">
+    <template #header>
+      <div class="ai-head">
+        <span>AI 解读</span>
+        <div>
+          <el-button size="small" type="primary" :loading="aiLoading" @click="runAi(false)">
+            {{ aiText ? '重新解读' : 'AI 解读' }}
+          </el-button>
+          <el-button v-if="aiText" size="small" :loading="aiLoading" @click="runAi(true)">换个说法</el-button>
+        </div>
+      </div>
+    </template>
+    <el-alert v-if="aiError" type="warning" :title="aiError" :closable="false" />
+    <div v-if="aiLoading" class="ai-loading">AI 正在阅读报告……</div>
+    <p v-if="aiText" class="ai-text">{{ aiText }}</p>
+    <p v-if="aiTime" class="ai-time">解读时间 {{ aiTime.replace('T', ' ').slice(0, 16) }} · 仅供参考，不构成医疗诊断</p>
+  </el-card>
   </div>
 </template>
 
 <style scoped>
+.breadcrumb {
+  margin-bottom: 12px;
+}
+
 .head-bar {
   display: flex;
   align-items: center;
@@ -215,5 +262,33 @@ function rowClass({ row }: { row: { abnormalFlag: number } }) {
 
 :deep(.abnormal-row) {
   --el-table-tr-bg-color: #fef0f0;
+}
+.ai-card {
+  margin-top: 16px;
+}
+
+.ai-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.ai-text {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  color: #1d2129;
+  margin: 0;
+}
+
+.ai-time {
+  color: #86909c;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.ai-loading {
+  color: #86909c;
+  font-size: 13px;
 }
 </style>

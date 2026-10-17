@@ -10,10 +10,35 @@ body,
   min-height: 100vh;
 }
 
+:root {
+  /* 品牌色：沉稳企业蓝，替换 Element 默认亮蓝 */
+  --el-color-primary: #1668dc;
+  --el-color-primary-dark-2: #1253cc;
+  --el-color-primary-light-3: #5c95e7;
+  --el-color-primary-light-5: #8bb4ee;
+  --el-color-primary-light-7: #b9d2f5;
+  --el-color-primary-light-8: #d0e1f8;
+  --el-color-primary-light-9: #e8f0fc;
+
+  /* 页面底色：内容区浅灰，面板白底 */
+  --page-bg: #f5f6f8;
+  --panel-border: #e4e7ed;
+
+  /* 表格：灰底表头、深色 600 字重 */
+  --el-table-header-bg-color: #fafafa;
+  --el-table-header-text-color: #606266;
+  --el-table-border-color: #ebeef5;
+}
+
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   color: #303133;
+  font-size: 14px;
+}
+
+.el-table th.el-table__cell {
+  font-weight: 600;
 }

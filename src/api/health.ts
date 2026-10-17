@@ -40,6 +40,11 @@ export function deleteReport(id: number): Promise<void> {
   return request.delete(`/health/reports/${id}`)
 }
 
+/** AI 解读报告（结果落库缓存；force 强制重新解读） */
+export function interpretReport(id: number, force = false): Promise<{ text: string; interpretedAt: string | null; cached: boolean }> {
+  return request.post(`/health/reports/${id}/interpretation`, null, { params: { force } })
+}
+
 /** 历年趋势 */
 export function trends(familyMemberId: number, itemName: string): Promise<TrendPoint[]> {
   return request.get('/health/trends', { params: { familyMemberId, itemName } })

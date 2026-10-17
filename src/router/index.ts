@@ -6,7 +6,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/reports',
+      redirect: '/home',
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: () => import('@/views/home/HomeView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/login',
@@ -26,6 +32,30 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/insurance',
+      name: 'insurance',
+      component: () => import('@/views/insurance/PoliciesView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/reminders',
+      name: 'reminders',
+      component: () => import('@/views/reminder/RemindersView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/archive',
+      name: 'archive',
+      component: () => import('@/views/archive/ArchiveView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/finance',
+      name: 'finance',
+      component: () => import('@/views/finance/FinanceView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/reports',
       name: 'reports',
       component: () => import('@/views/report/ReportsView.vue'),
@@ -35,6 +65,12 @@ const router = createRouter({
       path: '/reports/:id',
       name: 'report-detail',
       component: () => import('@/views/report/ReportDetailView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/async',
+      name: 'adminAsync',
+      component: () => import('@/views/admin/AsyncConsoleView.vue'),
       meta: { requiresAuth: true },
     },
     {

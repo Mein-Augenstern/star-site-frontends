@@ -2,6 +2,7 @@
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { computed, onMounted, reactive, ref } from 'vue'
+import PageHeader from '@/components/PageHeader.vue'
 import { addMember, createFamily, deleteMember, getMyFamily, listMembers, updateMember } from '@/api/family'
 import type { Family, FamilyMember } from '@/types/api'
 
@@ -127,22 +128,22 @@ function genderText(g: number) {
     </el-empty>
 
     <template v-else>
-      <div class="family-bar">
-        <span class="family-name">{{ family.name }}</span>
-        <span class="family-meta">共 {{ members.length }} 位成员</span>
-        <el-button type="primary" plain @click="openAdd">添加成员</el-button>
-      </div>
+      <PageHeader title="家庭成员" :description="`「${family.name}」的成员档案，共 ${members.length} 位`">
+        <template #actions>
+          <el-button type="primary" @click="openAdd">添加成员</el-button>
+        </template>
+      </PageHeader>
 
       <el-empty v-if="members.length === 0" description="还没有家庭成员档案，先添加成员" />
 
       <div class="member-grid">
-        <el-card v-for="m in members" :key="m.id" class="member-card" shadow="hover">
+        <el-card v-for="m in members" :key="m.id" class="member-card" shadow="never">
           <div class="member-head">
-            <el-avatar :size="48">{{ m.name.slice(0, 1) }}</el-avatar>
+            <el-avatar :size="40" shape="square">{{ m.name.slice(0, 1) }}</el-avatar>
             <div class="member-info">
               <div class="member-name">
                 {{ m.name }}
-                <el-tag size="small" type="info">{{ RELATIONS[m.relation] || m.relation }}</el-tag>
+                <el-tag size="small" type="info" effect="plain">{{ RELATIONS[m.relation] || m.relation }}</el-tag>
               </div>
               <div class="member-sub">
                 {{ genderText(m.gender) }}
@@ -213,26 +214,9 @@ function genderText(g: number) {
 </template>
 
 <style scoped>
-.family-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.family-name {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.family-meta {
-  color: #909399;
-  flex: 1;
-}
-
 .member-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
 }
 
@@ -242,8 +226,14 @@ function genderText(g: number) {
   align-items: center;
 }
 
-.member-name {
+.member-head :deep(.el-avatar) {
+  background: var(--el-color-primary-light-8);
+  color: var(--el-color-primary);
   font-size: 16px;
+}
+
+.member-name {
+  font-size: 15px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -251,13 +241,13 @@ function genderText(g: number) {
 }
 
 .member-sub {
-  color: #909399;
+  color: #86909c;
   font-size: 13px;
   margin-top: 4px;
 }
 
 .member-remark {
-  color: #606266;
+  color: #4e5969;
   font-size: 13px;
   margin: 12px 0 0;
 }

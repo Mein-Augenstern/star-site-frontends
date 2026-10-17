@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import { computed, onMounted, ref } from 'vue'
+import PageHeader from '@/components/PageHeader.vue'
 import { listMembers } from '@/api/family'
 import { trends } from '@/api/health'
 import type { FamilyMember, TrendPoint } from '@/types/api'
@@ -27,12 +28,15 @@ async function handleQuery() {
   loading.value = true
   try {
     points.value = await trends(memberId.value, itemName.value.trim())
-    if (points.value.length === 0) {
-      ElMessage.info('没有找到该指标的记录')
-    }
   } finally {
     loading.value = false
   }
+}
+
+function resetQuery() {
+  memberId.value = undefined
+  itemName.value = ''
+  points.value = null
 }
 
 const memberName = computed(() => members.value.find((m) => m.id === memberId.value)?.name ?? '')
@@ -48,25 +52,24 @@ function flagType(flag: number) {
 
 <template>
   <div v-loading="loading">
-    <div class="toolbar">
-      <el-select v-model="memberId" placeholder="选择家庭成员" style="width: 160px">
-        <el-option v-for="m in members" :key="m.id" :label="m.name" :value="m.id" />
-      </el-select>
-      <el-input
-        v-model="itemName" placeholder="指标名，如：空腹血糖" style="width: 220px" clearable
-        @keyup.enter="handleQuery"
-      />
-      <el-button type="primary" @click="handleQuery">查趋势</el-button>
-      <span v-if="points && points.length" class="hint">
-        {{ memberName }} · {{ itemName }} · {{ points.length }} 年记录
-      </span>
-    </div>
+    <PageHeader title="历年趋势" description="按指标对比家庭成员历年体检结果的变化" />
 
-    <el-empty v-if="points === null" description="选择成员并输入指标名，查看逐年变化" />
+    <el-card shadow="never" class="panel">
+      <div class="filter-bar">
+        <el-select v-model="memberId" placeholder="选择家庭成员" style="width: 160px">
+          <el-option v-for="m in members" :key="m.id" :label="m.name" :value="m.id" />
+        </el-select>
+        <el-input
+          v-model="itemName" placeholder="指标名，如：空腹血糖" style="width: 220px" clearable
+          @keyup.enter="handleQuery"
+        />
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button @click="resetQuery">重置</el-button>
+      </div>
 
-    <el-card v-else-if="points.length > 0" shadow="never">
-      <template #header>历年对比</template>
-      <el-table :data="points" stripe>
+      <el-empty v-if="points === null" description="选择成员并输入指标名，查看逐年变化" />
+
+      <el-table v-else-if="points.length > 0" :data="points">
         <el-table-column prop="reportYear" label="年份" width="100" sortable />
         <el-table-column label="数值" width="140">
           <template #default="{ row }">
@@ -87,31 +90,31 @@ function flagType(flag: number) {
                 {{ Math.abs(row.valueNum - points![$index - 1].valueNum!).toFixed(2) }}
               </span>
             </template>
-            <span v-else>—</span>
+            <span v-else class="cell-muted">—</span>
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
 
-    <el-empty v-else description="该指标暂无记录" />
+      <el-empty v-else :description="`${memberName} 的「${itemName}」暂无体检记录`" />
+    </el-card>
   </div>
 </template>
 
 <style scoped>
-.toolbar {
+.filter-bar {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 14px;
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--panel-border);
 }
 
-.hint {
-  color: #909399;
-  font-size: 13px;
+.cell-muted {
+  color: #c0c4cc;
 }
 
 .value {
-  font-size: 16px;
   font-weight: 600;
 }
 

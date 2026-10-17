@@ -2,6 +2,7 @@
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
+import PageHeader from '@/components/PageHeader.vue'
 import { getMe, updateMe } from '@/api/member'
 import { useUserStore } from '@/stores/user'
 
@@ -61,6 +62,8 @@ async function handleSave() {
 
 <template>
   <div v-loading="loading">
+    <PageHeader title="账号设置" description="维护个人资料与联系方式" />
+
     <el-card class="profile-card" shadow="never">
       <template #header>账号资料</template>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="80px" style="max-width: 560px">
