@@ -6,3 +6,4 @@ dist/
 # unplugin 自动生成
 auto-imports.d.ts
 components.d.ts
+.mimosa/
