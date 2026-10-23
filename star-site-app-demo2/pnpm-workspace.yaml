@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - esbuild
+  - '@dcloudio/uni-cli-shared'
+  - '@dcloudio/uni-app'
+  - '@parcel/watcher'
+  - core-js
+  - core-js-pure
+  - vue-demi
