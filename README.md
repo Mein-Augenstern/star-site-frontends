@@ -1,6 +1,10 @@
 # star-site-frontend
 
-star-site 前端：Vue 3 + Vite + TypeScript + Element Plus，前后端分离。
+star-site 家庭健康与数字资产平台的 **Web 管理端**：Vue 3 + Vite + TypeScript + Element Plus，前后端分离。
+家庭看板一屏总览（年缴保费 / 资产估值 / 本月收支 / 待办），覆盖体检报告、保单保障地图、证件资产、家庭财务、提醒中心等家庭运营场景。
+
+> 配套：后端 [star-site-backend](https://github.com/Mein-Augenstern/star-site-backend)（Spring Cloud Alibaba 微服务）·
+> 移动端 [star-site-app](https://github.com/Mein-Augenstern/star-site-app)（uni-app 小程序）
 
 ## 技术栈
 
