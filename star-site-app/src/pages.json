@@ -1,0 +1,148 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "家庭健康",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/reports/reports",
+      "style": {
+        "navigationBarTitleText": "体检报告",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/report-detail/detail",
+      "style": {
+        "navigationBarTitleText": "报告详情"
+      }
+    },
+    {
+      "path": "pages/reminder/reminder",
+      "style": {
+        "navigationBarTitleText": "提醒"
+      }
+    },
+    {
+      "path": "pages/trends/trends",
+      "style": {
+        "navigationBarTitleText": "指标趋势"
+      }
+    },
+    {
+      "path": "pages/visits/visits",
+      "style": {
+        "navigationBarTitleText": "就医记录",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/visit-form/visit-form",
+      "style": {
+        "navigationBarTitleText": "记一笔就诊"
+      }
+    },
+    {
+      "path": "pages/metrics/metrics",
+      "style": {
+        "navigationBarTitleText": "健康记录",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/report-form/report-form",
+      "style": {
+        "navigationBarTitleText": "录入报告"
+      }
+    },
+    {
+      "path": "pages/pregnancy/pregnancy",
+      "style": {
+        "navigationBarTitleText": "孕期助手"
+      }
+    },
+    {
+      "path": "pages/metric-trends/metric-trends",
+      "style": {
+        "navigationBarTitleText": "趋势曲线"
+      }
+    },
+    {
+      "path": "pages/security/security",
+      "style": {
+        "navigationBarTitleText": "账号与安全"
+      }
+    },
+    {
+      "path": "pages/indicator-form/indicator-form",
+      "style": {
+        "navigationBarTitleText": "录入指标"
+      }
+    },
+    {
+      "path": "pages/members/members",
+      "style": {
+        "navigationBarTitleText": "家庭成员"
+      }
+    },
+    {
+      "path": "pages/rule-form/rule-form",
+      "style": {
+        "navigationBarTitleText": "新建提醒"
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/record/record",
+      "style": {
+        "navigationBarTitleText": "记账"
+      }
+    },
+    {
+      "path": "pages/report/report",
+      "style": {
+        "navigationBarTitleText": "净资产"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#7f8389",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "健康"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "StarSite 家庭健康",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f7f7f7"
+  }
+}
