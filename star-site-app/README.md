@@ -35,4 +35,4 @@ login / mine 登录 / 我的
 
 [star-site-backend](https://github.com/Mein-Augenstern/star-site-backend)（微服务后端）·
 [star-site-platform-ai-service](https://github.com/Mein-Augenstern/star-site-platform-ai-service)（AI 智能体服务）·
-[star-site-frontend](https://github.com/Mein-Augenstern/star-site-frontend)（Web 管理端）
+同仓工程：[../star-site-frontend/](../star-site-frontend/)（Web 管理端）
